@@ -1,0 +1,16 @@
+replicaCount: 1
+
+image:
+  tag: latest
+
+reosources:
+  requests:
+    memory: 128Mi
+    cpu: 100m
+
+  limits:
+    memory: 160Mi
+    cpu: 200m
+
+config:
+  logLevel: debug
