@@ -1,3 +1,4 @@
+# Dev Environment
 replicaCount: 1
 
 image:
@@ -14,3 +15,20 @@ reosources:
 
 config:
   logLevel: debug
+
+redis:
+  auth:
+    enabled: false
+  master:
+    persistence:
+      enabled: false 
+
+postgresql:
+  auth:
+    postgresPassword: helmstore123
+    database: products 
+  
+  primary:
+    persistence:
+      enabled: false
+
