@@ -1,20 +1,41 @@
-replicaCount: 3
+# ── product-service overrides ──
+productService:
+  replicaCount: 3              # HA in prod!
+  image:
+    tag: "1.0.0"               # pinned tag in prod
+    pullPolicy: Always
+  ingress:
+    enabled: true              # expose in prod
+    host: "helmstore.example.com"
+  config:
+    dbHost: "product-db-postgresql.helmstore.svc.cluster.local"
+    logLevel: "info"
+    appEnv: "production"
+  secrets:
+    dbPassword: "INJECT_VIA_CI"   # real secret from CI/CD
+  autoscaling:
+    enabled: true
+    minReplicas: 3
+    maxReplicas: 10
+  resources:
+    limits:
+      cpu: 500m
+      memory: 256Mi
+    requests:
+      cpu: 250m
+      memory: 128Mi
 
-image:
-  tag: "1.0.0"
-
-resources:
-  requests:
-    memory: 256Mi
-    cpu: 200m
-
-  limits:
-    memory: 512Mi
-    cpu: 400m
-
-config:
-  logLevel: info 
-
-ingress:
-  enabled: true
-  host: "helmstore.microservice.com"
+# ── cart-service overrides ──
+cartService:
+  replicaCount: 3
+  ingress:
+    enabled: true
+    host: "helmstore.example.com"
+  config:
+    redisAuth: "true"
+    logLevel: "info"
+    appEnv: "production"
+  autoscaling:
+    enabled: true
+    minReplicas: 3
+    maxReplicas: 8
